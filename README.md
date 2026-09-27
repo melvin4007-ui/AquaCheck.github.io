@@ -1,0 +1,290 @@
+[index.html](https://github.com/user-attachments/files/32695763/index.html)
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Analiza la calidad del agua con una foto. Resultados claros sobre potabilidad y seguridad." />
+  <title>AquaCheck – Análisis de calidad del agua</title>
+  <link rel="stylesheet" href="styles.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:ital,wght@0,400;0,700;1,400&family=Lexend:wght@400;600;700&display=swap" rel="stylesheet" />
+</head>
+<body class="theme-default" data-accessible="false">
+
+  <!-- ============================================================
+       SKIP NAVIGATION (accesibilidad teclado)
+  ============================================================ -->
+  <a href="#main-content" class="skip-link">Saltar al contenido principal</a>
+
+  <!-- ============================================================
+       CABECERA
+  ============================================================ -->
+  <header class="app-header" role="banner">
+    <div class="header-inner">
+      <div class="brand">
+        <span class="brand-icon" aria-hidden="true">💧</span>
+        <h1 class="brand-name">AquaCheck</h1>
+      </div>
+
+      <!-- Botón de modo accesible – prominente y siempre visible -->
+      <button
+        id="btn-accessible"
+        class="btn-accessible"
+        type="button"
+        aria-pressed="false"
+        aria-label="Activar modo accesible para personas con TEA o condiciones especiales"
+        title="Modo accesible: colores de alto contraste, textos grandes e instrucciones simples"
+      >
+        <span class="accessible-icon" aria-hidden="true">♿</span>
+        <span class="accessible-label">Modo Accesible</span>
+      </button>
+    </div>
+  </header>
+
+  <!-- ============================================================
+       BARRA DE ESTADO DEL MODO ACCESIBLE
+  ============================================================ -->
+  <div
+    id="accessible-banner"
+    class="accessible-banner"
+    role="status"
+    aria-live="polite"
+    hidden
+  >
+    <span aria-hidden="true">✅</span>
+    <strong>Modo accesible activado.</strong> Colores, textos e instrucciones han sido simplificados.
+    <button
+      id="btn-exit-accessible"
+      class="btn-exit-accessible"
+      type="button"
+      aria-label="Desactivar modo accesible"
+    >
+      Desactivar
+    </button>
+  </div>
+
+  <!-- ============================================================
+       CONTENIDO PRINCIPAL
+  ============================================================ -->
+  <main id="main-content" role="main">
+
+    <!-- === SECCIÓN HERO / INSTRUCCIONES === -->
+    <section class="hero-section" aria-labelledby="hero-heading">
+      <h2 id="hero-heading" class="hero-heading">
+        ¿Es segura tu agua?
+      </h2>
+      <p class="hero-subtext">
+        Saca o sube una foto de tu agua y te digo si es segura para tomar.
+        <strong>Sin tecnicismos.</strong>
+      </p>
+
+      <!-- Pasos numerados (accesibles) -->
+      <ol class="steps-list" aria-label="Cómo usar la aplicación">
+        <li class="step">
+          <span class="step-num" aria-hidden="true">1</span>
+          <span class="step-text">Toma una foto o elige una imagen de tu agua</span>
+        </li>
+        <li class="step">
+          <span class="step-num" aria-hidden="true">2</span>
+          <span class="step-text">Pulsa <strong>Analizar</strong></span>
+        </li>
+        <li class="step">
+          <span class="step-num" aria-hidden="true">3</span>
+          <span class="step-text">Lee el resultado y la recomendación</span>
+        </li>
+      </ol>
+    </section>
+
+    <!-- === SECCIÓN DE CAPTURA === -->
+    <section class="capture-section" aria-labelledby="capture-heading">
+      <h2 id="capture-heading" class="visually-hidden">Captura de imagen</h2>
+
+      <!-- Zona de arrastrar y soltar / previsualización -->
+      <div
+        id="drop-zone"
+        class="drop-zone"
+        role="button"
+        tabindex="0"
+        aria-label="Área para subir imagen. Haz clic o arrastra una foto aquí"
+        aria-describedby="drop-hint"
+      >
+        <!-- Previsualización de la imagen -->
+        <img
+          id="preview-img"
+          class="preview-img"
+          src=""
+          alt="Vista previa de la imagen de agua seleccionada"
+          hidden
+        />
+
+        <!-- Estado vacío -->
+        <div id="drop-placeholder" class="drop-placeholder" aria-hidden="false">
+          <span class="drop-icon" aria-hidden="true">📷</span>
+          <p class="drop-text">Arrastra una foto aquí</p>
+          <p id="drop-hint" class="drop-hint">o usa los botones de abajo</p>
+        </div>
+      </div>
+
+      <!-- Controles de captura -->
+      <div class="capture-controls" role="group" aria-label="Opciones para agregar imagen">
+
+        <!-- Cámara (input capture) -->
+        <label class="btn btn-primary btn-capture" for="input-camera">
+          <span aria-hidden="true">📸</span>
+          <span>Tomar foto</span>
+          <input
+            id="input-camera"
+            type="file"
+            accept="image/*"
+            capture="environment"
+            class="visually-hidden"
+            aria-label="Abrir cámara para tomar una foto del agua"
+          />
+        </label>
+
+        <!-- Galería / archivo -->
+        <label class="btn btn-secondary btn-upload" for="input-gallery">
+          <span aria-hidden="true">🖼️</span>
+          <span>Subir imagen</span>
+          <input
+            id="input-gallery"
+            type="file"
+            accept="image/*"
+            class="visually-hidden"
+            aria-label="Seleccionar imagen del agua desde tu dispositivo"
+          />
+        </label>
+
+        <!-- Limpiar -->
+        <button
+          id="btn-clear"
+          class="btn btn-ghost"
+          type="button"
+          hidden
+          aria-label="Eliminar imagen seleccionada y empezar de nuevo"
+        >
+          <span aria-hidden="true">🗑️</span>
+          <span>Borrar</span>
+        </button>
+      </div>
+
+      <!-- Botón principal de análisis -->
+      <button
+        id="btn-analyze"
+        class="btn btn-analyze"
+        type="button"
+        disabled
+        aria-label="Analizar la calidad del agua en la imagen seleccionada"
+        aria-disabled="true"
+      >
+        <span class="analyze-icon" aria-hidden="true">🔬</span>
+        <span>Analizar Agua</span>
+      </button>
+    </section>
+
+    <!-- === SECCIÓN DE RESULTADOS === -->
+    <section
+      id="results-section"
+      class="results-section"
+      aria-labelledby="results-heading"
+      aria-live="polite"
+      hidden
+    >
+      <h2 id="results-heading" class="results-heading">Resultado del análisis</h2>
+
+      <!-- Indicador de carga -->
+      <div id="loading-indicator" class="loading-indicator" role="status" aria-label="Analizando imagen, espera un momento" hidden>
+        <div class="spinner" aria-hidden="true"></div>
+        <p class="loading-text">Analizando tu agua…</p>
+      </div>
+
+      <!-- Tarjeta de resultado -->
+      <div id="result-card" class="result-card" hidden>
+
+        <!-- Veredicto principal -->
+        <div id="verdict-banner" class="verdict-banner" role="alert" aria-atomic="true">
+          <span id="verdict-icon" class="verdict-icon" aria-hidden="true"></span>
+          <div class="verdict-text-group">
+            <p id="verdict-title" class="verdict-title"></p>
+            <p id="verdict-subtitle" class="verdict-subtitle"></p>
+          </div>
+        </div>
+
+        <!-- Métricas visuales -->
+        <div class="metrics-grid" role="list" aria-label="Métricas de calidad del agua">
+
+          <div class="metric-card" role="listitem">
+            <span class="metric-label">Contaminación</span>
+            <div class="metric-bar-wrap" aria-hidden="true">
+              <div id="bar-contamination" class="metric-bar"></div>
+            </div>
+            <span id="val-contamination" class="metric-value" aria-live="polite"></span>
+          </div>
+
+          <div class="metric-card" role="listitem">
+            <span class="metric-label">Potabilidad</span>
+            <div class="metric-bar-wrap" aria-hidden="true">
+              <div id="bar-potable" class="metric-bar bar-blue"></div>
+            </div>
+            <span id="val-potable" class="metric-value" aria-live="polite"></span>
+          </div>
+
+          <div class="metric-card" role="listitem">
+            <span class="metric-label">Transparencia</span>
+            <div class="metric-bar-wrap" aria-hidden="true">
+              <div id="bar-clarity" class="metric-bar bar-teal"></div>
+            </div>
+            <span id="val-clarity" class="metric-value" aria-live="polite"></span>
+          </div>
+
+        </div>
+
+        <!-- Indicadores de características visuales detectadas -->
+        <div class="visual-features" aria-label="Características visuales detectadas">
+          <h3 class="features-heading">Lo que veo en tu agua:</h3>
+          <ul id="features-list" class="features-list" aria-live="polite"></ul>
+        </div>
+
+        <!-- Recomendación -->
+        <div id="recommendation-box" class="recommendation-box" role="region" aria-labelledby="rec-heading">
+          <h3 id="rec-heading" class="rec-heading">
+            <span aria-hidden="true">💡</span> ¿Qué hacer?
+          </h3>
+          <p id="rec-text" class="rec-text" aria-live="polite"></p>
+        </div>
+
+        <!-- Aviso legal -->
+        <p class="disclaimer" role="note">
+          <strong>Nota:</strong> Este análisis es orientativo y se basa en características visuales. 
+          Para garantías de salud, consulta a un laboratorio acreditado.
+        </p>
+
+        <!-- Botón para hacer otro análisis -->
+        <button id="btn-new-analysis" class="btn btn-primary" type="button" aria-label="Hacer un nuevo análisis con otra imagen">
+          <span aria-hidden="true">🔄</span>
+          <span>Nuevo análisis</span>
+        </button>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- ============================================================
+       PIE DE PÁGINA
+  ============================================================ -->
+  <footer class="app-footer" role="contentinfo">
+    <p>AquaCheck &copy; 2026 &mdash; Análisis visual de calidad del agua</p>
+    <p class="footer-note">Los resultados son orientativos. No sustituyen análisis de laboratorio.</p>
+  </footer>
+
+  <!-- ============================================================
+       ANUNCIO ACCESIBLE ARIA (screen readers)
+  ============================================================ -->
+  <div id="aria-announcer" role="status" aria-live="assertive" aria-atomic="true" class="visually-hidden"></div>
+
+  <script src="app.js"></script>
+</body>
+</html>
